@@ -1,0 +1,27 @@
+{
+  "name": "@staltz/use-profunctor-state",
+  "version": "1.0.0",
+  "description": "React Hook to use profunctor lens for state management",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "compile": "tsc",
+    "test": "tape test.js",
+    "prepublishOnly": "npm run compile"
+  },
+  "author": "Andre Staltz <contact@staltz.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "16.7.0-alpha.0",
+    "react-dom": "16.7.0-alpha.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.0",
+    "tape": "^4.8.0",
+    "typescript": "3.1.x",
+    "react-test-renderer": "16.7.0-alpha.0"
+  }
+}

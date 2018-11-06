@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./",
+    "strict": true
+  },
+  "files": ["react.d.ts", "index.ts"]
+}

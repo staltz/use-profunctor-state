@@ -1,0 +1,7 @@
+/node_modules
+/.vscode
+/index.d.ts
+/index.js
+/index.js.map
+package-lock.json
+shrinkwrap.yaml
