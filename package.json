@@ -1,6 +1,6 @@
 {
   "name": "@staltz/use-profunctor-state",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React Hook to use profunctor lens for state management",
   "main": "index.js",
   "typings": "index.d.ts",
