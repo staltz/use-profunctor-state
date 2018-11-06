@@ -34,7 +34,7 @@ function useMemoizedProfunctorState<T>(state: T, setState: SetState<T>) {
       profunctor.promap = profunctor.promap.bind(profunctor);
       return profunctor;
     },
-    [state],
+    [JSON.stringify(state)],
   );
 }
 
