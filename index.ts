@@ -3,7 +3,7 @@ import {useState, useMemo} from 'react';
 export type Updater<T> = (prev: T) => T;
 export type SetState<T> = (updater: Updater<T>) => void;
 export type MapIn<T, S> = (outer: T) => S;
-export type MapOut<T, S> = (prevOuter: T, newInner: S) => T;
+export type MapOut<T, S> = (newInner: S, prevOuter: T) => T;
 
 export class ProfunctorState<T> {
   constructor(public state: T, public setState: SetState<T>) {}
@@ -19,7 +19,7 @@ export class ProfunctorState<T> {
             ? (newInnerStateOrUpdate as Updater<S>)(innerState)
             : (newInnerStateOrUpdate as S);
         if (newInnerState === innerState) return prevState;
-        return mapOut(prevState, newInnerState);
+        return mapOut(newInnerState, prevState);
       });
     };
     const innerState = mapIn(this.state);

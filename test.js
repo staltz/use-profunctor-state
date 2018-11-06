@@ -54,10 +54,7 @@ test('updates component state', t => {
 test('profunctor identity', t => {
   t.plan(6);
   function Input({callbag}) {
-    const my = useProfunctorState({age: 20}).promap(
-      outer => outer,
-      (outer, inner) => inner,
-    );
+    const my = useProfunctorState({age: 20}).promap(x => x, x => x);
     React.useEffect(() => {
       callbag(0, (t, d) => {
         if (t === 1) my.setState(() => ({age: d}));
@@ -106,8 +103,8 @@ test('profunctor composition', t => {
   t.plan(8);
   const f = outer => outer.age;
   const g = age => age + 100;
-  const h = (outer, age100) => age100 - 100;
-  const i = (outer, age) => ({age});
+  const h = age100 => age100 - 100;
+  const i = age => ({age});
   function Input({callbag}) {
     const level0 = useProfunctorState({age: 20});
     const level1 = level0.promap(f, i);
