@@ -54,20 +54,20 @@ export function useProfunctorState<T = any>(
   return useMemoizedProfunctorState(state, setState, args);
 }
 
-export type HOC = (component: any) => any;
-
-export function withProfunctorState<T = any>(initial: T, args?: any[]): HOC {
-  return (component: any) => {
-    function WPS() {
-      const prof = useProfunctorState(initial, args);
-      return createElement(component, prof);
-    }
-    WPS.displayName =
-      'WithProfunctorState(' +
-      (component.displayName || component.name || 'Component') +
-      ')';
-    return WPS;
-  };
+export function withProfunctorState<T = any>(
+  Component: any,
+  initial: T,
+  args?: any[],
+) {
+  function WPS() {
+    const prof = useProfunctorState(initial, args);
+    return createElement(Component, prof);
+  }
+  WPS.displayName =
+    'WithProfunctorState(' +
+    (Component.displayName || Component.name || 'Component') +
+    ')';
+  return WPS;
 }
 
 export default useProfunctorState;
