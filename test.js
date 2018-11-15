@@ -153,3 +153,58 @@ test('profunctor composition', t => {
   testRenderer.unmount();
   t.end();
 });
+
+test('promap accepts lens object', t => {
+  t.plan(8);
+  const f = outer => outer.age;
+  const g = age => age + 100;
+  const h = age100 => age100 - 100;
+  const i = age => ({age});
+  function Input({callbag}) {
+    const level0 = useProfunctorState({age: 20});
+    const level1 = level0.promap({get: f, set: i});
+    const level2 = level1.promap({get: g, set: h});
+    React.useEffect(() => {
+      callbag(0, (t, d) => {
+        if (t === 1) level2.setState(() => d);
+      });
+      () => {
+        callbag(2);
+      };
+    }, []);
+    t.equal(g(f(level0.state)), level2.state, 'g . f compose');
+    return React.createElement('span', null, `My age is ${level2.state}`);
+  }
+
+  const makeCallbag = () => {
+    let talkback;
+    let value;
+    return function callbag(t, d) {
+      if (t === 0 && value) (talkback = d)(1, value);
+      else if (t === 0) talkback = d;
+      else if (t === 1 && talkback) talkback(1, (value = d));
+      else if (t === 1) value = d;
+      else if (t === 2) (talkback = undefined), (value = undefined);
+    };
+  };
+
+  const callbag = makeCallbag();
+  const elem = React.createElement(Input, {callbag});
+  const testRenderer = TestRenderer.create(elem);
+
+  const result1 = testRenderer.toJSON();
+  t.ok(result1, 'should have rendered');
+  t.equal(result1.children.length, 1, 'should have one child');
+  t.equal(result1.children[0], 'My age is 120', 'should show 120');
+
+  callbag(1, 130);
+  testRenderer.update(elem);
+
+  const result2 = testRenderer.toJSON();
+  t.ok(result2, 'should have rendered');
+  t.equal(result2.children.length, 1, 'should have one child');
+  t.equal(result2.children[0], 'My age is 130', 'should show 130');
+
+  testRenderer.unmount();
+  t.end();
+});

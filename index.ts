@@ -2,31 +2,41 @@ import {useState, useMemo, createElement} from 'react';
 
 export type Updater<T> = (prev: T) => T;
 export type SetState<T> = (updater: Updater<T>) => void;
-export type MapIn<T, S> = (outer: T) => S;
-export type MapOut<T, S> = (newInner: S, prevOuter: T) => T;
+export type Lens<T, S> = {get: Getter<T, S>; set: Setter<T, S>};
+export type Getter<T, S> = (outer: T) => S;
+export type Setter<T, S> = (newInner: S, prevOuter: T) => T;
 
 export class ProfunctorState<T> {
   constructor(public state: T, public setState: SetState<T>) {}
 
+  promap<S>(lens: Lens<T, S>, args?: any[]): ProfunctorState<S>;
   promap<S>(
-    mapIn: MapIn<T, S>,
-    mapOut: MapOut<T, S>,
+    get: Getter<T, S>,
+    set: Setter<T, S>,
     args?: any[],
+  ): ProfunctorState<S>;
+  promap<S>(
+    a: Getter<T, S> | Lens<T, S>,
+    b?: Setter<T, S> | any[],
+    c?: any[],
   ): ProfunctorState<S> {
+    const get = typeof a === 'object' ? a.get : a;
+    const set = typeof a === 'object' ? a.set : (b as Setter<T, S>);
+    const args = typeof a === 'object' ? (b as any[]) : c;
     const innerSetState: SetState<S> = (
       newInnerStateOrUpdate: S | Updater<S>,
     ) => {
       this.setState(prevState => {
-        const innerState = mapIn(prevState);
+        const innerState = get(prevState);
         const newInnerState =
           typeof newInnerStateOrUpdate === 'function'
             ? (newInnerStateOrUpdate as Updater<S>)(innerState)
             : (newInnerStateOrUpdate as S);
         if (newInnerState === innerState) return prevState;
-        return mapOut(newInnerState, prevState);
+        return set(newInnerState, prevState);
       });
     };
-    const innerState = mapIn(this.state);
+    const innerState = get(this.state);
     return useMemoizedProfunctorState(innerState, innerSetState, args);
   }
 }
