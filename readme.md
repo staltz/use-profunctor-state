@@ -8,6 +8,8 @@ A simple and small (2KB!) approach to state management in React using functional
 npm install --save @staltz/use-profunctor-state
 ```
 
+See also [@staltz/**with**-profunctor-state](https://github.com/staltz/with-profunctor-state).
+
 ## Example
 
 Suppose your app handles temperatures in Fahrenheit, but one component works only with Celsius. You can create a conversion layer between those two with `promap(get, set)`.
