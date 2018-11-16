@@ -193,7 +193,7 @@ In practice, this specific library has not been used in production (neither have
 
 #### Why `@staltz/use-profunctor-state` and not `use-profunctor-state`?
 
-First, I want to wait til React hooks are official. Second, I don't want to pollute the NPM registry. Third, I believe most people should author packages under their own scope, so that forks can indicate who is maintaining the package, because I don't intend to maintain this package, although it's small and might not even need maintenance.
+First, I want to wait til React hooks are official. Second, I don't want to pollute the NPM registry. Third, I believe most people should author packages under their own scope (just like in GitHub!), so that forks can indicate who is maintaining the package, because I don't intend to maintain this package, although it's small and might not even need maintenance.
 
 ## License
 

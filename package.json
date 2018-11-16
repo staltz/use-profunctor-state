@@ -11,6 +11,10 @@
   },
   "author": "Andre Staltz <contact@staltz.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/staltz/use-profunctor-state.git"
+  },
   "dependencies": {
     "react": "16.7.0-alpha.0",
     "react-dom": "16.7.0-alpha.0"
