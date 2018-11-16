@@ -114,7 +114,7 @@ Compared to Redux and similar (ngrx, Vuex):
 #### `useProfunctorState(initial, [args])`
 
 ```js
-const {state, useState, promap} = useProfunctorState(initial);
+const {state, setState, promap} = useProfunctorState(initial);
 ```
 
 React hook that should be called in the body of a function component. Returns a profunctor state object, which consists of three parts:
