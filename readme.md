@@ -51,7 +51,7 @@ The CelsiusThermometer component received props `state`, `setState` and `promap`
 - `promap`: use this if CelsiusThermometer would have children components
 
 ```js
-function CelsiusThermometer({ state, setState }) {
+function CelsiusThermometer({ state, setState, promap }) {
   const onColder = () => setState(prev => prev - 5);
   const onHotter = () => setState(prev => prev + 5);
   return (
@@ -69,7 +69,7 @@ function CelsiusThermometer({ state, setState }) {
 #### Simpler architecture
 
 - Global app state == Props == Local component state
-- No actions, no reducers, no dispatch, no store,
+- No actions, no reducers, no dispatch, no store
 - Selector/unselector conversion layers in the component tree
 
 #### Familiar
