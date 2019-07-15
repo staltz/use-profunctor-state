@@ -108,7 +108,6 @@ function CelsiusThermometer({ state, setState, promap }) {
 Compared to Redux and similar (ngrx, Vuex):
 
 - No actions means no support for Redux DevTools
-- Hooks are still in Alpha, and not yet supported in React Native
 - This library itself is not used in production yet
 
 ## API
