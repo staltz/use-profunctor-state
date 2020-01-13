@@ -6,20 +6,18 @@ export type Lens<T, S> = {get: Getter<T, S>; set: Setter<T, S>};
 export type Getter<T, S> = (outer: T) => S;
 export type Setter<T, S> = (newInner: S, prevOuter: T) => T;
 
+interface Promap<T> {
+  <S>(lens: Lens<T, S>, args?: any[]): ProfunctorState<S>;
+  <S>(get: Getter<T, S>, set: Setter<T, S>, args?: any[]): ProfunctorState<S>;
+}
+
 export class ProfunctorState<T> {
   constructor(public state: T, public setState: SetState<T>) {}
-
-  promap<S>(lens: Lens<T, S>, args?: any[]): ProfunctorState<S>;
-  promap<S>(
-    get: Getter<T, S>,
-    set: Setter<T, S>,
-    args?: any[],
-  ): ProfunctorState<S>;
-  promap<S>(
+  promap: Promap<T> = <S>(
     a: Getter<T, S> | Lens<T, S>,
     b?: Setter<T, S> | any[],
     c?: any[],
-  ): ProfunctorState<S> {
+  ): ProfunctorState<S> => {
     const get = typeof a === 'object' ? a.get : a;
     const set = typeof a === 'object' ? a.set : (b as Setter<T, S>);
     const args = typeof a === 'object' ? (b as any[]) : c;
@@ -47,11 +45,7 @@ function useMemoizedProfunctorState<T>(
   args?: any[],
 ) {
   return useMemo(
-    () => {
-      const profunctor = new ProfunctorState(state, setState);
-      profunctor.promap = profunctor.promap.bind(profunctor);
-      return profunctor;
-    },
+    () => new ProfunctorState(state, setState),
     args ? args : [state],
   );
 }

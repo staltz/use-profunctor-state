@@ -208,3 +208,51 @@ test('promap accepts lens object', t => {
   testRenderer.unmount();
   t.end();
 });
+
+test('promap is spreadable', t => {
+  t.plan(4);
+  const f = outer => outer.age;
+  const g = age => ({ age });
+  function Input() {
+    const level0 = { ...useProfunctorState({ age: 20 }) };
+    t.ok(level0.promap, 'promap should be defined after spreading');
+
+    const level1 = level0.promap({ get: f, set: g });
+    return React.createElement('span', null, `My age is ${level1.state}`);
+  }
+
+  const elem = React.createElement(Input);
+  const testRenderer = TestRenderer.create(elem);
+
+  const result1 = testRenderer.toJSON();
+  t.ok(result1, 'should have rendered');
+  t.equal(result1.children.length, 1, 'should have one child');
+  t.equal(result1.children[0], 'My age is 20', 'should show 20');
+
+  testRenderer.unmount();
+  t.end();
+});
+
+test('promap is destructable', t => {
+  t.plan(4);
+  const f = outer => outer.age;
+  const g = age => ({ age });
+  function Input() {
+    const { promap } = useProfunctorState({ age: 20 });
+    t.ok(promap, 'promap should be defined after destructuring');
+
+    const level1 = promap({ get: f, set: g });
+    return React.createElement('span', null, `My age is ${level1.state}`);
+  }
+
+  const elem = React.createElement(Input);
+  const testRenderer = TestRenderer.create(elem);
+
+  const result1 = testRenderer.toJSON();
+  t.ok(result1, 'should have rendered');
+  t.equal(result1.children.length, 1, 'should have one child');
+  t.equal(result1.children[0], 'My age is 20', 'should show 20');
+
+  testRenderer.unmount();
+  t.end();
+});
